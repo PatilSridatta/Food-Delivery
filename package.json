@@ -1,0 +1,18 @@
+{
+  "name": "food-delivery",
+  "version": "1.0.0",
+  "description": "This is food delivery website",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "Sridatta Patil",
+  "license": "ISC",
+  "devDependencies": {
+    "parcel": "^2.16.1"
+  },
+  "dependencies": {
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  }
+}
