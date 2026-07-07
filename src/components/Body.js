@@ -17,7 +17,7 @@ const Body = () => {
     );
 
     const json = await data.json();
-
+ 
     const restaurants = json?.data?.cards?.find(
       (card) => card?.card?.card?.gridElements?.infoWithStyle?.restaurants,
     )?.card?.card?.gridElements?.infoWithStyle?.restaurants;
