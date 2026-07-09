@@ -1,20 +1,18 @@
-import { CDN_URL } from "../utils/constants";
+import { Link } from "react-router-dom";
 
-const RestaurantCard = (props) => {
-  const { resData } = props;
-  const { name, cuisines, avgRating, sla, cloudinaryImageId } = resData?.info;
+const RestaurantCard = ({ resData }) => {
+  const { id, name, cuisines, avgRating, costForTwoMessage, sla } = resData.info;
+
   return (
-    <div className="res-card">
-      <img
-        src={CDN_URL + cloudinaryImageId}
-        alt="res-logo"
-        className="res-img"
-      />
-      <h3>{name}</h3>
-      <h5>{cuisines.join(", ")}</h5>
-      <h5>{avgRating} stars</h5>
-      <h6>{sla.deliveryTime} mins</h6>
-    </div>
+    <Link to={"/restaurants/" + id} className="res-card">
+      <div className="res-card-content">
+        <h3>{name}</h3>
+        <p>{cuisines.join(", ")}</p>
+        <p>{avgRating} stars</p>
+        <p>{costForTwoMessage}</p>
+        <p>{sla?.slaString}</p>
+      </div>
+    </Link>
   );
 };
 

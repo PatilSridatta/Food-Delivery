@@ -7,7 +7,7 @@
  * Header
  * Logo
  * Nav Items
- * Body
+ * Body {/* click windows + . to get emojis */}
  *  - Search
  *  - RestaurantContainer
  *      - RestaurantCard (many)

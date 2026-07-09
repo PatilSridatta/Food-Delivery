@@ -1,30 +1,31 @@
 import RestaurantCard from "./RestaurantCard";
 import { useEffect, useState } from "react";
 import Shimmer from "./Shimmer";
+import MOCK_RESTAURANTS from "../utils/mockRestaurants";
+import useOnlineStatus from "../utils/useOnlineStatus";
 
 const Body = () => {
   const [listOfRestaurants, setListOfRestaurants] = useState([]);
   const [filteredRestaurants, setFilteredRestaurants] = useState([]);
   const [searchText, setSearchText] = useState("");
+  const [isTopRated, setIsTopRated] = useState(false);
 
   useEffect(() => {
     fetchData();
   }, []);
 
-  const fetchData = async () => {
-    const data = await fetch(
-      "https://corsproxy.io/?https://www.swiggy.com/dapi/restaurants/list/v5?lat=12.9352403&lng=77.624532&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING",
-    );
-
-    const json = await data.json();
- 
-    const restaurants = json?.data?.cards?.find(
-      (card) => card?.card?.card?.gridElements?.infoWithStyle?.restaurants,
+ const fetchData = async () => {
+  const restaurants =
+    MOCK_RESTAURANTS?.data?.cards?.find(
+      (card) => card?.card?.card?.gridElements?.infoWithStyle?.restaurants
     )?.card?.card?.gridElements?.infoWithStyle?.restaurants;
 
-    setListOfRestaurants(restaurants || []);
-    setFilteredRestaurants(restaurants || []);
-  };
+  setListOfRestaurants(restaurants || []);
+  setFilteredRestaurants(restaurants || []);
+};
+
+const isOnline = useOnlineStatus();
+if(isOnline === false) return <h1>🔴 You are offline, please check your internet connection!</h1>;
 
   return listOfRestaurants.length === 0 ? (
     <Shimmer />
@@ -53,16 +54,21 @@ const Body = () => {
           </button>
         </div>
         <button
-          className="filter-btn"
-          onClick={() => {
-            const filteredResList = listOfRestaurants.filter(
-              (res) => res.info.avgRating > 4,
-            );
-            setFilteredRestaurants(filteredResList);
-          }}
-        >
-          Top Rated Restaurants
-        </button>
+  className="filter-btn"
+  onClick={() => {
+    if (filteredRestaurants.length === listOfRestaurants.length) {
+      setFilteredRestaurants(
+        listOfRestaurants.filter(
+          (res) => res.info.avgRating > 4
+        )
+      );
+    } else {
+      setFilteredRestaurants(listOfRestaurants);
+    }
+  }}
+>
+  Top Rated Restaurants
+</button>
       </div>
       <div className="res-container">
         {filteredRestaurants.map((restaurant) => (
