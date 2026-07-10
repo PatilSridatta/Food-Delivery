@@ -9,23 +9,24 @@ const Body = () => {
   const [filteredRestaurants, setFilteredRestaurants] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [isTopRated, setIsTopRated] = useState(false);
+  const [filterBtn, setFilterBtn] = useState("Top Rated Restaurants");
 
   useEffect(() => {
     fetchData();
   }, []);
 
- const fetchData = async () => {
-  const restaurants =
-    MOCK_RESTAURANTS?.data?.cards?.find(
-      (card) => card?.card?.card?.gridElements?.infoWithStyle?.restaurants
+  const fetchData = async () => {
+    const restaurants = MOCK_RESTAURANTS?.data?.cards?.find(
+      (card) => card?.card?.card?.gridElements?.infoWithStyle?.restaurants,
     )?.card?.card?.gridElements?.infoWithStyle?.restaurants;
 
-  setListOfRestaurants(restaurants || []);
-  setFilteredRestaurants(restaurants || []);
-};
+    setListOfRestaurants(restaurants || []);
+    setFilteredRestaurants(restaurants || []);
+  };
 
-const isOnline = useOnlineStatus();
-if(isOnline === false) return <h1>🔴 You are offline, please check your internet connection!</h1>;
+  const isOnline = useOnlineStatus();
+  if (isOnline === false)
+    return <h1>🔴 You are offline, please check your internet connection!</h1>;
 
   return listOfRestaurants.length === 0 ? (
     <Shimmer />
@@ -54,21 +55,21 @@ if(isOnline === false) return <h1>🔴 You are offline, please check your intern
           </button>
         </div>
         <button
-  className="filter-btn"
-  onClick={() => {
-    if (filteredRestaurants.length === listOfRestaurants.length) {
-      setFilteredRestaurants(
-        listOfRestaurants.filter(
-          (res) => res.info.avgRating > 4
-        )
-      );
-    } else {
-      setFilteredRestaurants(listOfRestaurants);
-    }
-  }}
->
-  Top Rated Restaurants
-</button>
+          className="filter-btn"
+          onClick={() => {
+            if (filteredRestaurants.length === listOfRestaurants.length) {
+              setFilteredRestaurants(
+                listOfRestaurants.filter((res) => res.info.avgRating > 4),
+              );
+              setFilterBtn("All Restaurants");
+            } else {
+              setFilteredRestaurants(listOfRestaurants);
+              setFilterBtn("Top Rated Restaurants");
+            }
+          }}
+        >
+          {filterBtn}
+        </button>
       </div>
       <div className="res-container">
         {filteredRestaurants.map((restaurant) => (
